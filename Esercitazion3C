@@ -1,0 +1,134 @@
+ESERCITAZIONE 3
+-----------------------------------------------------------------------------------------------------------
+ESERCIZIO 1
+#include <stdio.h>
+
+int isprime(int n) {
+    int prime = 1;
+    if (n>1) {
+        int d = 2;
+        while (d<n && prime){
+            if (n%d == 0)
+                prime = 0;
+            d++;
+        }
+    }
+    else
+        prime = 0;
+    return prime;
+}
+
+/*
+int goldbach(int n) {
+    int p=2;
+    int c;
+    int d;
+    do{
+        c = 2*n-p;
+        p++;
+    }while(!isprime(c));
+        return p-1;
+}*/
+
+int goldbach(int n) {
+    int p=2;
+    int c;
+    int d;
+    do{
+        if(isprime(p)==1)
+            c = 2*n-p;
+            p++;
+    }while(!isprime(c));
+        return p-1;
+}
+
+int main() {
+    int n;
+    int p;
+    scanf("%d", &n);
+
+    p = goldbach(n);
+
+    printf("%d\n", p);
+
+    return 0;
+}
+//-------------------------------------------------------------------------------------------------------------------------------
+ESERCIZIO 2
+
+#include <stdio.h>
+
+int isprime(int n) {
+    int prime = 1; //numero primo
+    if (n>1) {
+        int d = 2;
+        while (d<n && prime){
+            if (n%d == 0)
+                prime = 0;
+            d++;
+        }
+    }
+    else
+        prime = 0;
+    return prime;
+}
+
+
+int nextprime(int n) {
+   do{
+       n++;
+   }while(!isprime(n));
+   return n;
+}
+
+int main() {
+    int n;
+    int a, d, k;
+    scanf("%d", &n);
+    a=1; //contatore numero divisione
+    do{
+        k=0;
+        a= nextprime(a); //inizia con a = 2
+        do {
+            d = n;
+            if (n % a == 0) //se è divisore
+                n = n / a;
+            k++;
+        }while (n%a==0);
+        if(d%a==0 && n!=1) { //se resto 0
+            printf("%d^%d", a, k);
+            printf("*");
+        }
+    }while(n!=1);
+    printf("%d^%d", a, k);
+
+    return 0;
+}
+//-------------------------------------------------------------------------------------------------------------------------------
+ESERCIZIO 3
+#include <stdio.h>
+
+int divisori(int n){
+    int i,s=0,g;
+    for(i=1;i<n;)
+        if(n%i==0) {
+            s = s + i;
+            i++;
+        } else
+            i++;
+    return s;
+}
+int p,s,x,y;
+int main() {
+    scanf("%d",&p);
+    scanf("%d",&s);
+    if(p>1 && s>1){
+        x = divisori(p);
+        if(x=s){
+            printf("SI");
+        } else
+            printf("NO");
+    }
+    return 0;
+}
+

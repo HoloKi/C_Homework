@@ -1,0 +1,111 @@
+//ESERCITAZIONE 1
+//ESERCIZIO 1
+#include <stdio.h>
+
+int prec,succ,mem; /*precedente, successivo e memoria*/
+int main(){
+    mem=1; /*presuppongo che mem sia true, quindi tutti pari*/
+    scanf("%d",&prec); /*controlla gli input se sono dispari*/
+    scanf("%d",&succ);
+    if (prec%2==1)
+        mem=0;
+    if (succ%2==1)
+        mem=0;
+    while(prec!=0 || succ!=0){
+        prec = succ; /*sposto il succ al precedente*/
+        scanf("%d",&succ); /*nuovo input successivo*/
+        if (succ%2==1) /*controllo input sucessivo se dispari*/
+            mem=0;
+    }/*termine ciclo while*/
+    if (mem==1) /*nel caso in cui la mem rimane invariata ad 1 e quindi presuppone che siano tutti numeri pari*/
+        printf("SI");
+    else
+        printf("NO");
+    return 0;
+}
+
+//-----------------------------------------------------
+//ESERCIZIO 2
+#include <stdio.h>
+
+int prec,succ,sum; /*precedente,sucessivo,somma*/
+int main() {
+    scanf("%d",&succ); /*input del sucessivo*/
+    if (succ%2!=0)
+        sum = succ; /*se succ è dispari, somma prende il valore di successivo*/
+    while(succ != prec+1){
+        prec = succ; /*memorizzo il sucessivo nel precedente*/
+        scanf("%d",&succ);
+        if (succ%2!=0)
+            sum = sum + succ;
+    }
+    printf("%d",sum);
+    return 0;
+}
+//------------------------------------------------------------
+//ESERCIZIO 3
+#include <stdio.h>
+
+int p,s,t,somma; //primo secondo e terzo
+float contatore;
+int minimo,massimo;
+float media;
+
+int main() {
+    scanf("%d",&p); //imetto primo input
+    contatore = 1; //contatore dunque sale a 1
+    minimo = p; //presuppongo che minimo e massimo = p
+    massimo = p;
+    somma = p;
+    s = p;
+    scanf("%d",&p);
+    contatore = 2;
+    somma = somma + p;
+    if (p > massimo)
+        massimo = p;
+    if (p < minimo)
+        minimo = p;
+    do{
+        s = p;
+        t = s;
+        scanf("%d",&p);
+        if (p > massimo)
+            massimo = p;
+        if (p < minimo)
+            minimo = p;
+        somma = somma + p;
+        contatore = contatore + 1;
+    }while(p!= s && s!= t);
+    contatore = contatore - 2;
+    somma = somma - (p + p);
+    media = somma/contatore;
+
+
+
+
+    printf("%d\n", minimo);
+    printf("%d\n", massimo);
+    printf("%.3f", media); /*specifica che vogliamo 3 decimali dopo la vigola*/
+    return 0;
+}
+//-------------------------------------------------------
+//ESERCIZIO 4
+#include <stdio.h>
+
+int m,i;
+int s,k,c; /*sequanza, numero e controllo*/
+int main() {
+    m = 1;
+    scanf("%d", &s); //metto il numero di sequenza
+    scanf("%d", &k);
+    for (i = 0; i < s; i = i + 1){
+        scanf("%d",&c);
+        if (c == k)
+            m = 0;
+    }
+    if (m==0){
+        printf("SI");
+    }else
+        printf("NO");
+    return 0;
+}

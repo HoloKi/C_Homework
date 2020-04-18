@@ -1,0 +1,210 @@
+ESERCITAZIONE 6
+//-------------------------------------------------------------------------------
+ESERCIZIO 1
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+/*decide se la stringa s2 e' una sottostringa di s1*/
+
+
+int dimensione(char s[]){ //dimensione array
+    int l=0,n;
+    do{
+        l++;
+    }while(s[l]!='\0');
+    return l;
+}
+
+
+void trasforma_array(char s[]){
+    int i,n,dim;
+    dim= dimensione(s);   
+    for(i=0;i<dim;i++){
+        if(s[i]>='A' && s[i]<='Z'){
+            n = s[i]+32;
+            s[i]=n;
+        }
+    }
+}
+
+void controlla_caratteri(char s[]){ 
+    int a,b=0,j=0;
+    int dim = dimensione(s);
+    char v[100];
+    for(a=0;a<dim;a++){ //copy array
+        v[a]=s[a];
+    }
+    while(v[j]!='<'){ //scorro l'array finche non trovo l'inizio < nel caso l'output s1= ciao<help> 
+        j++;
+    }
+    j++;
+    do{
+        s[b]=v[j];
+        j++;
+        b++;
+    }while(v[j]!='>'); //dovrei sostituire s2 con solo il contenuto fino a >
+    s[b]='\0'; //chiudo l'array s
+}
+
+int contenuta(char s2[], char s1[]){
+    int i=1,flag,k=0,c=0;
+    trasforma_array(s1);
+    trasforma_array(s2);
+    if(s2[i]=='>'){
+        return 1;
+    }else{
+        while(s1[k]!=s2[i]){ //finchè s1= --elp> e s2 <elp>
+            k++;
+        }
+        flag=1;
+        do{
+            if(s2[i]!=s1[k]){
+                flag=0;
+            }
+            i++;
+            k++;
+        }while(s2[i]!='>');
+        if(flag==0){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+    
+}
+
+int main() {
+    char str1[100];
+    char str2[100];
+    
+    scanf("%s", str1);
+    scanf("%s", str2);
+    if (contenuta(str2,str1)) 
+        printf("CONTENUTA\n");
+    else
+        printf("NON CONTENUTA\n");
+
+    
+    return 0;
+}
+
+
+//-----------------------------------------------------------------------------------
+ESERCIZIO 2
+
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+
+enum colore{Bianco, Nero};
+
+typedef enum colore tcolore;
+
+void leggi_vettore(int v[], int dim) 
+{
+    int i;
+    for (i=0; i<dim; i++)
+        scanf("%d", &v[i]);
+}
+
+int grattacielo(int reward[],tcolore colore,int n){
+    int guadagno=0;
+    if(n<=0) {   //caso base altezza <= 0
+        return guadagno;
+    }else{
+        if(colore==Bianco){ 
+            int x,y;
+            x = grattacielo(reward, Bianco, n-1);
+            y = grattacielo(reward, Nero,n-1) + reward[n-1];
+            if(x>y){
+                guadagno += x;
+            }else{
+                guadagno += y;
+            } 
+        }else{
+            return grattacielo(reward, Bianco,n-1) + guadagno;
+        }
+    }
+    return guadagno;
+}
+int main() {
+    int reward[100];
+    int n;
+    scanf("%d", &n);
+    leggi_vettore(reward, n);
+    printf("%d", grattacielo(reward, Bianco, n));
+    return 0;
+}
+
+//----------------------------------------------------------------------------------------------
+ESERCIZIO 3
+
+int posizione_colonna(char s[3][3],char elem){
+    int r,c,l=0;
+    int p1,p2;
+    for(r=0;r<3;r++){ 
+        for(c=0;c<3;c++){
+            if(s[r][c]==elem){
+                p1=r;
+                p2=c;
+            }
+            
+        }
+    }
+    return p2;
+}
+
+
+int posizione_riga(char s[3][3],char elem){
+    int r,c,l=0;
+    int p1,p2;
+    for(r=0;r<3;r++){ 
+        for(c=0;c<3;c++){
+            if(s[r][c]==elem){
+                p1=r;
+                p2=c;
+            }
+            
+        }
+    }
+    return p1;
+}
+
+
+int entryTime(char* s, char* keypad) {
+    int r,c,l=0,i;
+    int n = strlen(s);
+    int tempo;
+    char vet[3][3];
+    for(r=0;r<3;r++){ //matrice 3x3 di keypad
+        for(c=0;c<3;c++){
+            vet[r][c]=keypad[l]; //li rendo un int
+            l++;
+        }
+    }
+    int r1,r2,c1,c2,sott1,sott2;
+    for(i=0;i<n-1;i++){
+        r1 = posizione_riga(vet,s[i]); //posizione riga di 4
+        c1 = posizione_colonna(vet,s[i]); //posizione colonna di 4
+        r2 = posizione_riga(vet,s[i+1]); //posizione riga di 2
+        c2 = posizione_colonna(vet,s[i+1]); //posizione colonna di 2
+
+        sott1 = abs(r1-r2);
+        sott2 = abs(c1-c2);
+        if(sott1>sott2){
+            tempo = tempo + sott1;
+        }else{
+            tempo = tempo + sott2;
+        }
+
+    }
+    return tempo;
+}
